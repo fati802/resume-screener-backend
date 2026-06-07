@@ -1,15 +1,12 @@
 @import "tailwindcss";
 
 :root {
+  --primary: #404E3B;
+  --secondary: #7B9669;
+  --text: #BAC8B1;
+
   --background: #ffffff;
   --foreground: #171717;
-
-  /* Jade Pebble Morning Palette */
-  --jade-dark: #404E3B;
-  --jade-medium: #7B9669;
-  --jade-slate: #6C8480;
-  --jade-light: #BAC8B1;
-  --jade-pale: #E6E6E6;
 }
 
 @theme inline {
@@ -17,13 +14,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
