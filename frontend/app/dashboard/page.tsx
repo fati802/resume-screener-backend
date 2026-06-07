@@ -489,9 +489,7 @@ export default function DashboardPage() {
 
               <div className="text-center">
                 <p className="text-xs mb-2 uppercase tracking-wide">Designed & Developed by</p>
-                <p className="text-white font-bold text-lg italic" style={{ fontFamily: "Georgia, serif" }}>
-                  {formatName(user?.full_name) || "Fatiha Sheikh"}
-                </p>
+                <p className="text-white font-bold text-lg italic" style={{ fontFamily: "Georgia, serif" }}> Fatiha Sheikh</p>
                 <p className="text-xs mt-2 leading-relaxed opacity-70">Building impactful digital experiences<br />with clean code and creative design.</p>
               </div>
 
