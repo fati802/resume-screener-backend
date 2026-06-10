@@ -27,12 +27,13 @@ class Settings(BaseSettings):
         description="Async PostgreSQL connection string",
     )
 
-   # --- Redis ---
-REDIS_URL: str = Field(
-    default="",
-    description="Redis connection string",
-)
-CACHE_TTL_SECONDS: int = 3600  # 1 hour
+    # --- Redis ---
+    REDIS_URL: str = Field(
+        default="",
+        description="Redis connection string",
+    )
+    CACHE_TTL_SECONDS: int = 3600  # 1 hour
+
     # --- JWT Auth ---
     JWT_SECRET_KEY: str = Field(
         default="change-me-in-production-use-a-long-random-string",
@@ -43,14 +44,14 @@ CACHE_TTL_SECONDS: int = 3600  # 1 hour
 
     # --- CORS ---
     CORS_ORIGINS: List[str] = [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:5173",
-    "https://resume-screener-frontend-brown.vercel.app",
-    "https://resume-screener-frontend-git-main-fati802s-projects.vercel.app",
-    "https://resume-screener-frontend-6hnlupj7u-fati802s-projects.vercel.app",
-]
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "https://resume-screener-frontend-brown.vercel.app",
+        "https://resume-screener-frontend-git-main-fati802s-projects.vercel.app",
+        "https://resume-screener-frontend-6hnlupj7u-fati802s-projects.vercel.app",
+    ]
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
