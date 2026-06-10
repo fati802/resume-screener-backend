@@ -27,13 +27,12 @@ class Settings(BaseSettings):
         description="Async PostgreSQL connection string",
     )
 
-    # --- Redis ---
-    REDIS_URL: str = Field(
-        default="redis://localhost:6379/0",
-        description="Redis connection string",
-    )
-    CACHE_TTL_SECONDS: int = 3600  # 1 hour
-
+   # --- Redis ---
+REDIS_URL: str = Field(
+    default="",
+    description="Redis connection string",
+)
+CACHE_TTL_SECONDS: int = 3600  # 1 hour
     # --- JWT Auth ---
     JWT_SECRET_KEY: str = Field(
         default="change-me-in-production-use-a-long-random-string",

@@ -1,25 +1,27 @@
 """
 Redis client module.
 Provides async Redis connection and caching helpers.
+Falls back gracefully if Redis is not configured.
 """
 
 import json
 from typing import Any, Optional
 
-import redis.asyncio as aioredis
-
 from app.core.config import get_settings
 
 settings = get_settings()
 
-# --- Redis Client Singleton ---
-_redis_client: Optional[aioredis.Redis] = None
+_redis_client = None
+_redis_available = bool(settings.REDIS_URL)
 
 
-async def get_redis() -> aioredis.Redis:
+async def get_redis():
     """Get or create the Redis client singleton."""
     global _redis_client
+    if not _redis_available:
+        return None
     if _redis_client is None:
+        import redis.asyncio as aioredis
         _redis_client = aioredis.from_url(
             settings.REDIS_URL,
             encoding="utf-8",
@@ -36,13 +38,11 @@ async def close_redis() -> None:
         _redis_client = None
 
 
-# --- Cache Helpers ---
 async def get_cache(key: str) -> Optional[Any]:
-    """
-    Retrieve a cached value by key.
-    Returns deserialized JSON or None if not found.
-    """
+    """Retrieve a cached value by key. Returns None if Redis unavailable."""
     client = await get_redis()
+    if client is None:
+        return None
     value = await client.get(key)
     if value is not None:
         try:
@@ -52,16 +52,11 @@ async def get_cache(key: str) -> Optional[Any]:
     return None
 
 
-async def set_cache(
-    key: str,
-    value: Any,
-    ttl: Optional[int] = None,
-) -> None:
-    """
-    Store a value in cache with optional TTL.
-    Values are serialized as JSON.
-    """
+async def set_cache(key: str, value: Any, ttl: Optional[int] = None) -> None:
+    """Store a value in cache. Silently skips if Redis unavailable."""
     client = await get_redis()
+    if client is None:
+        return
     serialized = json.dumps(value, default=str)
     if ttl is None:
         ttl = settings.CACHE_TTL_SECONDS
@@ -69,11 +64,10 @@ async def set_cache(
 
 
 async def invalidate_cache(pattern: str) -> int:
-    """
-    Delete all cache keys matching a pattern.
-    Returns the number of keys deleted.
-    """
+    """Delete all cache keys matching a pattern. Returns 0 if Redis unavailable."""
     client = await get_redis()
+    if client is None:
+        return 0
     keys = []
     async for key in client.scan_iter(match=pattern):
         keys.append(key)
@@ -83,7 +77,9 @@ async def invalidate_cache(pattern: str) -> int:
 
 
 async def invalidate_key(key: str) -> bool:
-    """Delete a single cache key. Returns True if key existed."""
+    """Delete a single cache key. Returns False if Redis unavailable."""
     client = await get_redis()
+    if client is None:
+        return False
     result = await client.delete(key)
     return result > 0
