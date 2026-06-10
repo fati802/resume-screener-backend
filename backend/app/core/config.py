@@ -44,11 +44,14 @@ class Settings(BaseSettings):
 
     # --- CORS ---
     CORS_ORIGINS: List[str] = [
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:5173",
-    ]
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+    "https://resume-screener-frontend-brown.vercel.app",
+    "https://resume-screener-frontend-git-main-fati802s-projects.vercel.app",
+    "https://resume-screener-frontend-6hnlupj7u-fati802s-projects.vercel.app",
+]
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod

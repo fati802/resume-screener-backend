@@ -86,3 +86,16 @@ async def root():
 @app.get("/health", tags=["Health"])
 async def health():
     return {"status": "healthy", "version": settings.APP_VERSION}
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "https://resume-screener-frontend-brown.vercel.app",
+        "https://resume-screener-frontend-git-main-fati802s-projects.vercel.app",
+        "https://resume-screener-frontend-6hnlupj7u-fati802s-projects.vercel.app",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
